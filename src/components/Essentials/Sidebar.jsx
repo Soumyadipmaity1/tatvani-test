@@ -32,7 +32,7 @@ const Sidebar = () => {
       <ul className="pt-4">
         <li 
           className={`p-4 my-4 rounded-lg text-xl ${
-            pathname === '/admin/dashboard' ? 'bg-gray-700' : 'hover:bg-gray-800'
+            pathname === '/dashboard' ? 'bg-gray-700' : 'hover:bg-gray-800'
           }`}
         >
           <Link href="/admin/dashboard">Dashboard</Link>
