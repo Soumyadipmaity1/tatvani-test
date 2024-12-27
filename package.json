@@ -9,9 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hono/zod-validator": "^0.4.2",
     "@prisma/client": "^6.1.0",
+    "bcryptjs": "^2.4.3",
     "eslint-define-config": "^2.1.0",
     "hono": "^4.6.14",
+    "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.12.0",
     "next": "15.1.2",
     "react": "^19.0.0",
@@ -19,7 +22,8 @@
     "react-icons": "^5.4.0",
     "react-slick": "^0.30.3",
     "react-transition-group": "^4.4.5",
-    "slick-carousel": "^1.8.1"
+    "slick-carousel": "^1.8.1",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

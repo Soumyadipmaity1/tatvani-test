@@ -1,15 +1,15 @@
-import Sidebar from "@/components/Essentials/Sidebar";
-import Header from "@/components/Essentials/Header";
+// import Sidebar from "@/components/Essentials/Sidebar";
+// import Header from "@/components/Essentials/Header";
 
-export const dynamic = 'force-dynamic'; // Disable static optimization
+// export const dynamic = 'force-dynamic'; // Disable static optimization
 
 const AdminDashboard = () => {
   return (
     <div className="admin-dashboard flex h-screen">
-      <Sidebar />
+      {/* <Sidebar /> */}
 
       <div className="flex-1 flex flex-col pt-16 pl-64"> 
-        <Header />
+        {/* <Header /> */}
 
         <div className="flex-1 overflow-y-auto text-white p-8 bg-gray-800">
           <h1 className="text-4xl font-bold">Welcome to the Admin Dashboard</h1>
