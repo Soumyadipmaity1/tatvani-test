@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { zValidator } from '@hono/zod-validator'
 import bcrypt from "bcryptjs";
 // import { createToken } from '@/utils/userToken';
-import { setCookie } from "hono/cookie";
+import { setCookie,deleteCookie } from "hono/cookie";
 import jwt from 'jsonwebtoken';
 import { PrismaClient } from "@prisma/client";
 
@@ -51,12 +51,13 @@ const users = new Hono()
                         fullName, email, password: hashPwd
                     }
                 });
-            return c.json({ message: 'User created' }, 201);
+                return c.json({ message: 'User created' }, 201);
             }
         } catch (error) {
             return c.json({ message: 'An error occurred' }, 500);
         }
-    }).post("/sign-in", zValidator("json", signInUp.pick({
+    })
+    .post("/sign-in", zValidator("json", signInUp.pick({
         email: true,
         password: true
     })), async (c) => {
@@ -84,6 +85,14 @@ const users = new Hono()
         } catch (error) {
             return c.json({ message: 'An error occurred' }, 500);
         }
+    })
+    .get("/logout", async (c) => {
+        try {
+            deleteCookie(c, "token");
+            return c.json({ message: 'User signed out'}, 200);
+        } catch (error) {
+    return c.json({ message: 'An error occurred' }, 500);
+}
     })
 
 
