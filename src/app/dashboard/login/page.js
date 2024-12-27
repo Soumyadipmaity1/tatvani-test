@@ -1,25 +1,49 @@
 "use client";
 import { useState } from 'react';
-
+// import { useSignIn } from '@/hooks/user/useSignIn';
 import { useRouter } from 'next/navigation';
-
+import {
+  useMutation,
+  useQuery, useQueryClient
+} from '@tanstack/react-query'
+import axios from 'axios'
+// import toast from 'react-hot-toast';
 const Login = () => {
   // default email and password
   const [email, setEmail] = useState('admin@tatvani.com'); // Default email
   const [password, setPassword] = useState('tatvani'); // Default password
   // const { login } = useAuth();
   // const navigate = useNavigate();
-  const navigate = useRouter();
+  const router = useRouter();
 
-  const handleSubmit = (e) => {
-    // e.preventDefault();
-    
-    // // Authentication logic
-    // if (email && password) {
-    //   // login(); 
-    //   navigate.push('/admin/dashboard'); 
-    // }
+
+  // const signInMutation = useSignIn();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent form default submission behavior
+  
+    try {
+      const response = await axios.post("/api/users/sign-in", {
+        email,
+        password,
+      });
+  
+      if (response.status === 200) {
+        router.push("/dashboard");
+        // console.log("success");
+        // navigate("/dashboard"); // Use navigate with the correct method
+      } else {
+        console.error("Unexpected response status:", response.status);
+      }
+    } catch (error) {
+      if (error.response && error.response.data) {
+        console.error("Error:", error.response.data.message);
+      } else {
+        console.error("An unexpected error occurred:", error.message);
+      }
+    }
   };
+  
 
   return (
     <div className="flex justify-center items-center h-screen bg-gray-900">
