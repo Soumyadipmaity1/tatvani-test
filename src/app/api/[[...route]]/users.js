@@ -1,11 +1,33 @@
 import { Hono } from 'hono'
 import { z } from 'zod';
 import { zValidator } from '@hono/zod-validator'
-import { findUserByEmail } from '@/utils/findUser';
-import { db } from '@/lib/db';
 import bcrypt from "bcryptjs";
-import { createToken } from '@/utils/userToken';
-import { setCookie } from "hono/cookie"
+// import { createToken } from '@/utils/userToken';
+import { setCookie } from "hono/cookie";
+import jwt from 'jsonwebtoken';
+import { PrismaClient } from "@prisma/client";
+
+export const db = new PrismaClient();
+
+
+const createToken = (userId) => {
+    return jwt.sign({ userId }, process.env.SIGN_IN_TOKEN, { expiresIn: '24h' });
+}
+
+const verifyToken = (token) => {
+    const decoded = jwt.verify(token, process.env.SIGN_IN_TOKEN);
+    return decoded;
+}
+
+async function findUserByEmail(email) {
+    const user = await db.user.findFirst({ where: { email: email } })
+    return user;
+}
+async function findUserById(id) {
+    const user = await db.user.findFirst({ where: { email: id } });
+    return user;
+}
+
 const signInUp = z.object({
     fullName: z.string().min(3).max(10),
     email: z.string().email(),
@@ -15,6 +37,7 @@ const signInUp = z.object({
 const users = new Hono()
     .post("/signUp", zValidator("json", signInUp), async (c) => {
         try {
+            console.log("first")
             const { fullName, email, password } = await c.req.json();
             // Check if the user already exists
             const userExists = await findUserByEmail(email);
@@ -28,7 +51,7 @@ const users = new Hono()
                         fullName, email, password: hashPwd
                     }
                 });
-                return c.json({ message: 'User created' }, 201);
+            return c.json({ message: 'User created' }, 201);
             }
         } catch (error) {
             return c.json({ message: 'An error occurred' }, 500);

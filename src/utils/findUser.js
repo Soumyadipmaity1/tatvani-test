@@ -1,4 +1,3 @@
-import React from 'react'
 import { db } from '../lib/db'
 
 export async function findUserByEmail(email) {
